@@ -26,18 +26,23 @@ program
 program
   .command('search <keyword>')
   .description('Search stars by keyword')
-  .action((keyword) => {
-    const stars = searchStars(keyword);
-    if (stars.length === 0) {
-      console.log('No stars found');
-      return;
+  .action(async (keyword) => {
+    try {
+      const stars = await searchStars(keyword);
+      if (stars.length === 0) {
+        console.log('No stars found');
+        return;
+      }
+      stars.forEach(s => {
+        console.log(`${s.name}`);
+        console.log(`  ${s.description}`);
+        console.log(`  ${s.url}`);
+        console.log();
+      });
+    } catch (error) {
+      console.error('Search failed:', error.message);
+      process.exit(1);
     }
-    stars.forEach(s => {
-      console.log(`${s.name}`);
-      console.log(`  ${s.description}`);
-      console.log(`  ${s.url}`);
-      console.log();
-    });
   });
 
 program
@@ -46,8 +51,12 @@ program
   .action(async (name) => {
     try {
       const [owner, repo] = name.split('/');
+      if (!owner || !repo) {
+        console.error('Invalid format. Use owner/repo (e.g., facebook/react)');
+        process.exit(1);
+      }
       await unstar(owner, repo);
-      removeStar(name);
+      await removeStar(name);
       console.log(`Unstarred ${name}`);
     } catch (error) {
       console.error('Unstar failed:', error.message);
