@@ -10,15 +10,23 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.get('/api/stars', (req, res) => {
-  const keyword = req.query.q || '';
-  const stars = searchStars(keyword);
-  res.json(stars);
+  try {
+    const keyword = req.query.q || '';
+    const stars = searchStars(keyword);
+    res.json(stars);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.delete('/api/stars/:name', async (req, res) => {
   const name = req.params.name;
   try {
-    const [owner, repo] = name.split('/');
+    const parts = name.split('/');
+    if (parts.length !== 2 || !parts[0] || !parts[1]) {
+      return res.status(400).json({ error: 'Invalid owner/repo format' });
+    }
+    const [owner, repo] = parts;
     await unstar(owner, repo);
     removeStar(name);
     res.json({ success: true });
