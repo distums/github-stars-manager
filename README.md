@@ -5,7 +5,8 @@ Sync and manage your GitHub Stars with CLI and Web UI.
 ## Setup
 
 ```bash
-export GITHUB_TOKEN=your_github_token
+cp .env.example .env
+# Edit .env and add your GITHUB_TOKEN
 npm install
 ```
 

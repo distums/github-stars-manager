@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+require('dotenv').config();
 const { Command } = require('commander');
 const { sync } = require('./sync');
 const { searchStars, removeStar } = require('./store');
