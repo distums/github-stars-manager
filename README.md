@@ -9,9 +9,16 @@ Sync and manage your GitHub Stars with CLI and Web UI.
 1. Go to [GitHub Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens)
 2. Click "Generate new token (classic)"
 3. Set expiration as needed
-4. Select scopes:
-   - `repo` (Full control of private repositories) - required for starring
+4. Select scopes based on your needs:
+
+| Scope | When to Select |
+|-------|---------------|
+| `repo` (Full control of private repositories) | Required if you have **private repositories** in your stars |
+| `public_repo` (Access public repositories) | Required if you only have **public repositories** |
+
 5. Click "Generate token" and copy the token
+
+**Note:** If you only star public repositories, just select `public_repo`. If you have any private starred repositories, you need `repo` scope.
 
 ### 2. Configure and Install
 
