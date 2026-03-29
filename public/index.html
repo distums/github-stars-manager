@@ -44,9 +44,10 @@
         const container = document.getElementById('stars');
         container.innerHTML = stars.map(s => `
           <div class="star">
-            <h3><a href="${escapeHtml(s.url)}" target="_blank">${escapeHtml(s.name)}</a></h3>
+            <h3><a href="${escapeHtml(s.url)}" target="_blank">${escapeHtml(s.full_name)}</a></h3>
             <p>${escapeHtml(s.description) || 'No description'}</p>
-            <button onclick="unstar('${escapeJs(s.name)}')">Unstar</button>
+            <p><small>Language: ${escapeHtml(s.language) || 'N/A'} | ID: ${s.id}</small></p>
+            <button onclick="unstar('${escapeJs(s.full_name)}')">Unstar</button>
           </div>
         `).join('');
       } catch (err) {

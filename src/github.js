@@ -35,9 +35,11 @@ async function getStarred() {
     }
   }
   return stars.map(repo => ({
-    name: `${repo.owner.login}/${repo.name}`,
+    id: repo.id,
+    full_name: repo.full_name,
     description: repo.description || '',
-    url: repo.html_url
+    url: repo.html_url,
+    language: repo.language || ''
   }));
 }
 

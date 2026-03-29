@@ -31,13 +31,13 @@ async function searchStars(keyword) {
   if (!keyword) return stars;
   const lower = keyword.toLowerCase();
   return stars.filter(
-    s => s.name.toLowerCase().includes(lower) || (s.description && s.description.toLowerCase().includes(lower))
+    s => s.full_name.toLowerCase().includes(lower) || (s.description && s.description.toLowerCase().includes(lower)) || (s.language && s.language.toLowerCase().includes(lower))
   );
 }
 
-async function removeStar(name) {
+async function removeStar(fullName) {
   const stars = await loadStars();
-  const index = stars.findIndex(s => s.name === name);
+  const index = stars.findIndex(s => s.full_name === fullName);
   if (index === -1) return false;
   stars.splice(index, 1);
   await saveStars(stars);
@@ -46,7 +46,7 @@ async function removeStar(name) {
 
 function validateStarItem(item) {
   if (!item || typeof item !== 'object') return false;
-  if (typeof item.name !== 'string' || !item.name.trim()) return false;
+  if (typeof item.full_name !== 'string' || !item.full_name.trim()) return false;
   return true;
 }
 
@@ -56,7 +56,7 @@ function validateNewStars(newStars) {
   }
   for (const star of newStars) {
     if (!validateStarItem(star)) {
-      throw new Error('Each star must have a valid name field');
+      throw new Error('Each star must have a valid full_name field');
     }
   }
   return true;
@@ -65,9 +65,9 @@ function validateNewStars(newStars) {
 async function addStars(newStars) {
   validateNewStars(newStars);
   const stars = await loadStars();
-  const nameSet = new Set(stars.map(s => s.name));
+  const nameSet = new Set(stars.map(s => s.full_name));
   for (const star of newStars) {
-    if (!nameSet.has(star.name)) {
+    if (!nameSet.has(star.full_name)) {
       stars.push(star);
     }
   }

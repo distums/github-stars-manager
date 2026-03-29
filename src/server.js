@@ -10,26 +10,26 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.get('/api/stars', (req, res) => {
+app.get('/api/stars', async (req, res) => {
   try {
     const keyword = req.query.q || '';
-    const stars = searchStars(keyword);
+    const stars = await searchStars(keyword);
     res.json(stars);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-app.delete('/api/stars/:name', async (req, res) => {
-  const name = req.params.name;
+app.delete('/api/stars/:fullName', async (req, res) => {
+  const fullName = req.params.fullName;
   try {
-    const parts = name.split('/');
+    const parts = fullName.split('/');
     if (parts.length !== 2 || !parts[0] || !parts[1]) {
       return res.status(400).json({ error: 'Invalid owner/repo format' });
     }
     const [owner, repo] = parts;
     await unstar(owner, repo);
-    removeStar(name);
+    await removeStar(fullName);
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ error: error.message });

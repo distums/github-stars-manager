@@ -35,8 +35,10 @@ program
         return;
       }
       stars.forEach(s => {
-        console.log(`${s.name}`);
-        console.log(`  ${s.description}`);
+        console.log(`${s.full_name}`);
+        console.log(`  ID: ${s.id}`);
+        console.log(`  ${s.description || 'No description'}`);
+        console.log(`  Language: ${s.language || 'N/A'}`);
         console.log(`  ${s.url}`);
         console.log();
       });
@@ -49,16 +51,16 @@ program
 program
   .command('unstar <owner/repo>')
   .description('Unstar a repository')
-  .action(async (name) => {
+  .action(async (fullName) => {
     try {
-      const [owner, repo] = name.split('/');
+      const [owner, repo] = fullName.split('/');
       if (!owner || !repo) {
         console.error('Invalid format. Use owner/repo (e.g., facebook/react)');
         process.exit(1);
       }
       await unstar(owner, repo);
-      await removeStar(name);
-      console.log(`Unstarred ${name}`);
+      await removeStar(fullName);
+      console.log(`Unstarred ${fullName}`);
     } catch (error) {
       console.error('Unstar failed:', error.message);
       process.exit(1);
