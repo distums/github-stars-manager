@@ -5,7 +5,7 @@ async function sync() {
   console.log('Fetching stars from GitHub...');
   const stars = await getStarred();
   console.log(`Found ${stars.length} stars`);
-  addStars(stars);
+  await addStars(stars);
   console.log('Stars synced successfully');
 }
 
