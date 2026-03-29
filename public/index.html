@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Stars Manager</title>
+  <style>
+    body { font-family: system-ui; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    h1 { color: #333; }
+    input { width: 100%; padding: 10px; font-size: 16px; margin-bottom: 20px; }
+    .star { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 8px; }
+    .star h3 { margin: 0 0 5px; }
+    .star h3 a { color: #0366d6; text-decoration: none; }
+    .star p { margin: 5px 0; color: #666; }
+    .star button { background: #dc3545; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; }
+    .star button:hover { background: #c82333; }
+  </style>
+</head>
+<body>
+  <h1>GitHub Stars</h1>
+  <input type="text" id="search" placeholder="Search stars...">
+  <div id="stars"></div>
+  <script>
+    async function loadStars() {
+      const q = document.getElementById('search').value;
+      const res = await fetch('/api/stars?q=' + encodeURIComponent(q));
+      const stars = await res.json();
+      const container = document.getElementById('stars');
+      container.innerHTML = stars.map(s => `
+        <div class="star">
+          <h3><a href="${s.url}" target="_blank">${s.name}</a></h3>
+          <p>${s.description || 'No description'}</p>
+          <button onclick="unstar('${s.name}')">Unstar</button>
+        </div>
+      `).join('');
+    }
+    async function unstar(name) {
+      if (!confirm('Unstar ' + name + '?')) return;
+      await fetch('/api/stars/' + encodeURIComponent(name), { method: 'DELETE' });
+      loadStars();
+    }
+    document.getElementById('search').addEventListener('input', loadStars);
+    loadStars();
+  </script>
+</body>
+</html>
