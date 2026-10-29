@@ -1,6 +1,12 @@
 # GitHub Stars Manager
 
-Sync and manage your GitHub Stars with CLI and Web UI.
+Sync, search, and manage your GitHub Stars effortlessly via **Agent Skill** and **CLI**.
+
+## Install as Agent Skill
+
+```bash
+npx skills add distums/github-stars-manager
+```
 
 ## Setup
 
