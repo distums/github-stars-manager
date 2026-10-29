@@ -52,13 +52,14 @@ Each cached record looks like:
   "topics": ["cli", "automation"],
   "visibility": "public",
   "created_at": "2024-01-15T08:00:00Z",
-  "updated_at": "2026-10-01T12:30:00Z"
+  "updated_at": "2026-10-01T12:30:00Z",
+  "pushed_at": "2026-10-01T10:00:00Z"
 }
 ```
 
 ## Richer queries: `scripts/query.js`
 
-`search` is a single substring match with human-oriented output. For anything more structured (filter by language, topics, license, archived/disabled/private status, update/creation dates, sorting, counting, stats, or JSON output for further reasoning), use the bundled script — it reads the same `stars.json` and prints JSON:
+`search` is a single substring match with human-oriented output. For anything more structured (filter by language, topics, license, archived/disabled/private status, update/creation/push dates, sorting, counting, stats, or JSON output for further reasoning), use the bundled script — it reads the same `stars.json` and prints JSON:
 
 ```bash
 node <skill-dir>/scripts/query.js [--file <stars.json>] [options]
@@ -76,7 +77,9 @@ node <skill-dir>/scripts/query.js [--file <stars.json>] [options]
   --updated-before <iso> updated on/before date
   --created-after <iso>  created on/after date
   --created-before <iso> created on/before date
-  --sort <key>           sort by updated, created, or name (append :asc or :desc)
+  --pushed-after <iso>   pushed on/after date
+  --pushed-before <iso>  pushed on/before date
+  --sort <key>           sort by updated, created, pushed, or name (append :asc or :desc)
   --stats                output counts by language, license, top topics, top owners, and archived/disabled/private totals
   --limit <n>            cap number of records (default 50; 0 = no cap)
 ```

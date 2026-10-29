@@ -52,6 +52,7 @@ async function getStarred() {
     visibility: repo.visibility,
     created_at: repo.created_at,
     updated_at: repo.updated_at,
+    pushed_at: repo.pushed_at,
   }));
 }
 

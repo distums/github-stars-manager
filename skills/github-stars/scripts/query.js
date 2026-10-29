@@ -43,6 +43,8 @@ function parseArgs(argv) {
       case '--updated-before': opts.updatedBefore = nextDate(); break;
       case '--created-after': opts.createdAfter = nextDate(); break;
       case '--created-before': opts.createdBefore = nextDate(); break;
+      case '--pushed-after': opts.pushedAfter = nextDate(); break;
+      case '--pushed-before': opts.pushedBefore = nextDate(); break;
       case '--sort': opts.sort = next().toLowerCase(); break;
       case '--limit': opts.limit = parseInt(next(), 10); break;
       case '--stats': opts.stats = true; break;
@@ -64,8 +66,10 @@ function parseArgs(argv) {
           '  --updated-before <iso> Updated on/before date',
           '  --created-after <iso>  Created on/after date',
           '  --created-before <iso> Created on/before date',
+          '  --pushed-after <iso>   Pushed on/after date',
+          '  --pushed-before <iso>  Pushed on/before date',
           'Options:',
-          '  --sort <key>           Sort by updated, created, or name (append :asc or :desc)',
+          '  --sort <key>           Sort by updated, created, pushed, or name (append :asc or :desc)',
           '  --stats                Output summary counts instead of records',
           '  --limit <n>            Max records to return (default 50; 0 = unlimited)'
         ].join('\n'));
@@ -156,6 +160,12 @@ function main() {
       if (opts.createdAfter !== undefined && ts < opts.createdAfter) return false;
       if (opts.createdBefore !== undefined && ts > opts.createdBefore) return false;
     }
+    if (opts.pushedAfter !== undefined || opts.pushedBefore !== undefined) {
+      const ts = s.pushed_at ? Date.parse(s.pushed_at) : NaN;
+      if (Number.isNaN(ts)) return false;
+      if (opts.pushedAfter !== undefined && ts < opts.pushedAfter) return false;
+      if (opts.pushedBefore !== undefined && ts > opts.pushedBefore) return false;
+    }
     return true;
   });
 
@@ -169,10 +179,13 @@ function main() {
       if (rawKey === 'created' || rawKey === 'created_at') {
         return ((Date.parse(a.created_at) || 0) - (Date.parse(b.created_at) || 0)) * dir;
       }
+      if (rawKey === 'pushed' || rawKey === 'pushed_at') {
+        return ((Date.parse(a.pushed_at) || 0) - (Date.parse(b.pushed_at) || 0)) * dir;
+      }
       if (rawKey === 'name' || rawKey === 'full_name') {
         return String(a.full_name || '').localeCompare(String(b.full_name || '')) * dir;
       }
-      fail(`Unknown --sort key: ${rawKey} (expected updated, created, or name)`);
+      fail(`Unknown --sort key: ${rawKey} (expected updated, created, pushed, or name)`);
     });
   }
 
