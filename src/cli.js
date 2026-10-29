@@ -16,9 +16,10 @@ program
 program
   .command('sync')
   .description('Sync all GitHub Stars to local')
-  .action(async () => {
+  .option('-f, --force', 'Force overwrite local stars with remote data')
+  .action(async (options) => {
     try {
-      await sync();
+      await sync(options);
     } catch (error) {
       console.error('Sync failed:', error.message);
       process.exit(1);

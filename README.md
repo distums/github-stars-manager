@@ -39,6 +39,9 @@ npm start config -- --show
 # Sync all stars from GitHub
 npm start sync
 
+# Force sync and overwrite local stars
+npm start sync -- -f
+
 # Search stars by keyword
 npm start search keyword
 

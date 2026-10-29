@@ -73,4 +73,9 @@ async function addStars(newStars) {
   await saveStars(stars);
 }
 
-module.exports = { loadStars, saveStars, searchStars, removeStar, addStars };
+async function setStars(newStars) {
+  validateNewStars(newStars);
+  await saveStars(newStars);
+}
+
+module.exports = { loadStars, saveStars, searchStars, removeStar, addStars, setStars };
