@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-require('dotenv').config();
+const { loadEnv, PACKAGE_ENV_FILE, STORE_FILE, setToken } = require('./config');
+loadEnv();
 const { Command } = require('commander');
 const { sync } = require('./sync');
 const { searchStars, removeStar } = require('./store');
@@ -65,6 +66,46 @@ program
       console.error('Unstar failed:', error.message);
       process.exit(1);
     }
+  });
+
+program
+  .command('config')
+  .description('Manage CLI configuration in package installation directory')
+  .option('--set-token <token>', 'Set GitHub Personal Access Token in package .env')
+  .option('--path', 'Print the path of the package configuration and data files')
+  .option('--show', 'Show current configuration status')
+  .action((options) => {
+    if (options.setToken) {
+      setToken(options.setToken);
+      console.log('GitHub token successfully saved to package configuration.');
+      return;
+    }
+
+    if (options.path) {
+      console.log('Package .env path:', PACKAGE_ENV_FILE);
+      console.log('Package data file:', STORE_FILE);
+      return;
+    }
+
+    if (options.show) {
+      const token = process.env.GITHUB_TOKEN;
+      console.log('Package .env path:', PACKAGE_ENV_FILE);
+      console.log('Package data file:', STORE_FILE);
+      if (token) {
+        const masked = token.length > 8 ? `${token.slice(0, 4)}...${token.slice(-4)}` : '****';
+        console.log(`GitHub Token: Configured (${masked})`);
+      } else {
+        console.log('GitHub Token: Not configured');
+      }
+      return;
+    }
+
+    console.log('Package .env path:', PACKAGE_ENV_FILE);
+    console.log('Package data file:', STORE_FILE);
+    console.log('\nUsage:');
+    console.log('  github-stars config --set-token <token>');
+    console.log('  github-stars config --path');
+    console.log('  github-stars config --show');
   });
 
 program.parse();

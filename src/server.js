@@ -1,4 +1,5 @@
-require('dotenv').config();
+const { loadEnv } = require('./config');
+loadEnv();
 const express = require('express');
 const path = require('path');
 const { searchStars, removeStar } = require('./store');

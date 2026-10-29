@@ -1,7 +1,6 @@
 const axios = require('axios');
 
 const GITHUB_API = 'https://api.github.com';
-const TOKEN = process.env.GITHUB_TOKEN;
 
 const client = axios.create({
   baseURL: GITHUB_API,
@@ -12,10 +11,11 @@ const client = axios.create({
 });
 
 function authHeaders() {
-  if (!TOKEN) {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) {
     throw new Error('GITHUB_TOKEN environment variable is not set');
   }
-  return { Authorization: `Bearer ${TOKEN}` };
+  return { Authorization: `Bearer ${token}` };
 }
 
 async function getStarred() {

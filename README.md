@@ -31,6 +31,11 @@ npm install
 ## CLI Commands
 
 ```bash
+# Configure GitHub token (saved directly in package directory)
+npm start config -- --set-token ghp_xxxxxx
+# or check current configuration paths and status
+npm start config -- --show
+
 # Sync all stars from GitHub
 npm start sync
 
