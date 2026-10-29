@@ -2,6 +2,7 @@
   "name": "github-stars-manager",
   "version": "1.0.0",
   "description": "Manage GitHub Stars with CLI and Web UI",
+  "license": "MIT",
   "main": "src/cli.js",
   "bin": {
     "github-stars": "src/cli.js"

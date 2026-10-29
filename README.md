@@ -62,3 +62,8 @@ Stars are stored locally in `stars.json` with the following schema:
   "language": "JavaScript"
 }
 ```
+
+## License
+
+[MIT](LICENSE)
+
